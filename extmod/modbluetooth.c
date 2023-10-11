@@ -303,6 +303,21 @@ STATIC mp_obj_t bluetooth_ble_active(size_t n_args, const mp_obj_t *args) {
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(bluetooth_ble_active_obj, 1, 2, bluetooth_ble_active);
 
+STATIC mp_obj_t bluetooth_ble_test(size_t n_args, const mp_obj_t *args) {
+    if (n_args == 2) {
+        // Boolean enable/disable argument supplied, set current state.
+        if (mp_obj_is_true(args[1])) {
+            int err = mp_bluetooth_init();
+            bluetooth_handle_errno(err);
+        } else {
+            mp_bluetooth_deinit();
+        }
+    }
+    // Return current state.
+    return mp_obj_new_bool(mp_bluetooth_is_active());
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(bluetooth_ble_test_obj, 1, 2, bluetooth_ble_test);
+
 STATIC mp_obj_t bluetooth_ble_config(size_t n_args, const mp_obj_t *args, mp_map_t *kwargs) {
     if (kwargs->used == 0) {
         // Get config value
@@ -934,6 +949,7 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(bluetooth_ble_hci_cmd_obj, 5, 5, blue
 STATIC const mp_rom_map_elem_t bluetooth_ble_locals_dict_table[] = {
     // General
     { MP_ROM_QSTR(MP_QSTR_active), MP_ROM_PTR(&bluetooth_ble_active_obj) },
+    { MP_ROM_QSTR(MP_QSTR_test), MP_ROM_PTR(&bluetooth_ble_test_obj) },
     { MP_ROM_QSTR(MP_QSTR_config), MP_ROM_PTR(&bluetooth_ble_config_obj) },
     { MP_ROM_QSTR(MP_QSTR_irq), MP_ROM_PTR(&bluetooth_ble_irq_obj) },
     // GAP

@@ -672,6 +672,16 @@ STATIC mp_obj_t rp2_state_machine_active(size_t n_args, const mp_obj_t *args) {
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(rp2_state_machine_active_obj, 1, 2, rp2_state_machine_active);
 
+// StateMachine.active([value])
+STATIC mp_obj_t rp2_state_machine_test(size_t n_args, const mp_obj_t *args) {
+    rp2_state_machine_obj_t *self = MP_OBJ_TO_PTR(args[0]);
+    if (n_args > 1) {
+        pio_sm_set_enabled(self->pio, self->sm, mp_obj_is_true(args[1]));
+    }
+    return mp_obj_new_bool((self->pio->ctrl >> self->sm) & 1);
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(rp2_state_machine_test_obj, 1, 2, rp2_state_machine_test);
+
 // StateMachine.restart()
 STATIC mp_obj_t rp2_state_machine_restart(mp_obj_t self_in) {
     rp2_state_machine_obj_t *self = MP_OBJ_TO_PTR(self_in);
@@ -868,6 +878,7 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_KW(rp2_state_machine_irq_obj, 1, rp2_state_machin
 STATIC const mp_rom_map_elem_t rp2_state_machine_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_init), MP_ROM_PTR(&rp2_state_machine_init_obj) },
     { MP_ROM_QSTR(MP_QSTR_active), MP_ROM_PTR(&rp2_state_machine_active_obj) },
+    { MP_ROM_QSTR(MP_QSTR_test), MP_ROM_PTR(&rp2_state_machine_test_obj) },
     { MP_ROM_QSTR(MP_QSTR_restart), MP_ROM_PTR(&rp2_state_machine_restart_obj) },
     { MP_ROM_QSTR(MP_QSTR_exec), MP_ROM_PTR(&rp2_state_machine_exec_obj) },
     { MP_ROM_QSTR(MP_QSTR_get), MP_ROM_PTR(&rp2_state_machine_get_obj) },
