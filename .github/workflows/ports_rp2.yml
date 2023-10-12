@@ -29,12 +29,12 @@ jobs:
     - name: Find UF2
       run: find . | grep uf2
     - name: Copy result out of nix store
-      run: cp src/build/.uf2 ./micropython.uf2
+      run: cp ports/rp2/build-RPI_PICO_W/firmware.uf2 ./micropython-rpi-pico-w.uf2
     - name: Upload result
       uses: actions/upload-artifact@v3
       with:
-        name: micropython.uf2
-        path: micropython.uf2
+        name: micropython-rpi-pico-w.uf2
+        path: micropython-rpi-pico-w.uf2
 
     #- name: Put environment variable into the env context
     #  run: echo "app_name=$APP_NAME" >> $GITHUB_ENV
