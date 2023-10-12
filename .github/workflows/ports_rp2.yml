@@ -26,7 +26,8 @@ jobs:
       run: source tools/ci.sh && ci_rp2_setup
     - name: Build
       run: source tools/ci.sh && ci_rp2_build
-    - name: find . | grep uf2
+    - name: Find UF2
+      run: find . | grep uf2
     - name: Copy result out of nix store
       run: cp src/build/.uf2 ./micropython.uf2
     - name: Upload result
